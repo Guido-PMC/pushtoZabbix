@@ -3,6 +3,7 @@ from google.cloud import bigquery
 import urllib
 from bs4 import BeautifulSoup
 import yfinance as yf
+import schedule
 
 CREDS_BIGQUERY = '/creds/bigsurmining-14baacf42c48.json'
 
@@ -38,6 +39,7 @@ def bigQueryRead(query):
     bq_response = client.query(query=f'{query}').to_dataframe()
     return bq_response
 
+def job():
 usuariosDF = bigQueryRead(f"SELECT * FROM BD1.usuarios ORDER BY id DESC")
 for usuariosPool, inversionInicial,revShare,revShare_std, totalMined_mtd, actualHashrate, qtyAsics,activeWorkers,inactiveWorkers,totalMined_std,totalPayed_mtd,inmatureBalance,totalPayed_std,revShare_mtd,paidTodayEstimate in zip(usuariosDF["usuariosPool"],usuariosDF["inversionInicial"],usuariosDF["revShare"], usuariosDF["revShare_std"], usuariosDF["totalMined_mtd"], usuariosDF["actualHashrate"], usuariosDF["qtyAsics"],usuariosDF["activeWorkers"],usuariosDF["inactiveWorkers"],usuariosDF["totalMined_std"],usuariosDF["totalPayed_mtd"],usuariosDF["inmatureBalance"],usuariosDF["totalPayed_std"],usuariosDF["revShare_mtd"],usuariosDF["paidTodayEstimate"]):
     zabbix_push(usuariosPool, "dolar_blue", getUSDValue())
@@ -57,3 +59,8 @@ for usuariosPool, inversionInicial,revShare,revShare_std, totalMined_mtd, actual
     zabbix_push(usuariosPool, "totalPayed_std", totalPayed_std)
     zabbix_push(usuariosPool, "revShare_mtd", revShare_mtd)
     zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
+
+schedule.every(5).minutes.do(job)
+
+while True:
+    schedule.run_pending()
