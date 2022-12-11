@@ -31,7 +31,7 @@ def getUSDValue():
 def zabbix_push(puid, key, value):
     stream = os.popen(f"zabbix_sender -z '54.92.215.92'    -s {puid} -k application.{key} -o {str(value)}")
     output = stream.read()
-    #print(output)
+    print(f"ID: {puid}, key: {key}, value: {value} {output[37:][:23]}")
 
 def bigQueryRead(query):
     client = bigquery.Client.from_service_account_json(json_credentials_path=CREDS_BIGQUERY)
