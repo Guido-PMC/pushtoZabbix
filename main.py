@@ -40,6 +40,7 @@ def bigQueryRead(query):
     return bq_response
 
 def job():
+    i=0
     usuariosDF = bigQueryRead(f"SELECT * FROM BD1.usuarios ORDER BY id DESC")
     for usuariosPool, inversionInicial,revShare,revShare_std, totalMined_mtd, actualHashrate, qtyAsics,activeWorkers,inactiveWorkers,totalMined_std,totalPayed_mtd,inmatureBalance,totalPayed_std,revShare_mtd,paidTodayEstimate in zip(usuariosDF["usuariosPool"],usuariosDF["inversionInicial"],usuariosDF["revShare"], usuariosDF["revShare_std"], usuariosDF["totalMined_mtd"], usuariosDF["actualHashrate"], usuariosDF["qtyAsics"],usuariosDF["activeWorkers"],usuariosDF["inactiveWorkers"],usuariosDF["totalMined_std"],usuariosDF["totalPayed_mtd"],usuariosDF["inmatureBalance"],usuariosDF["totalPayed_std"],usuariosDF["revShare_mtd"],usuariosDF["paidTodayEstimate"]):
         zabbix_push(usuariosPool, "dolar_blue", getUSDValue())
@@ -62,6 +63,8 @@ def job():
         print("\n")
     print("-----")
 schedule.every(5).minutes.do(job)
-
+i = 0
 while True:
+    i = i+1
+    print('Loading ... [%d%%]\r'%i, end="")
     schedule.run_pending()
