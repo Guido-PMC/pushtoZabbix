@@ -59,7 +59,8 @@ def job():
         zabbix_push(usuariosPool, "totalPayed_std", totalPayed_std)
         zabbix_push(usuariosPool, "revShare_mtd", revShare_mtd)
         zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
-
+        print("\n")
+    print("-----")
 schedule.every(5).minutes.do(job)
 
 while True:
