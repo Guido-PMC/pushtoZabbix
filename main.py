@@ -62,6 +62,6 @@ def job():
         print("\n")
     print("-----")
 job()
-schedule.every(5).minutes.do(job)
+schedule.every(2).minutes.do(job)
 while True:
     schedule.run_pending()
