@@ -61,6 +61,7 @@ def job():
         zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
         print("\n")
     print("-----")
+job()
 schedule.every(5).minutes.do(job)
 while True:
     schedule.run_pending()
