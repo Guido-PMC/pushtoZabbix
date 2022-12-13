@@ -4,6 +4,7 @@ import urllib
 from bs4 import BeautifulSoup
 import yfinance as yf
 import schedule
+from datetime import datetime
 
 CREDS_BIGQUERY = '/creds/bigsurmining-14baacf42c48.json'
 
@@ -59,6 +60,8 @@ def job():
         zabbix_push(usuariosPool, "totalPayed_std", totalPayed_std)
         zabbix_push(usuariosPool, "revShare_mtd", revShare_mtd)
         zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
+        zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
+        zabbix_push(usuariosPool,"dayOfMonth", datetime.now().day)
         print("\n")
     print("-----")
 job()
