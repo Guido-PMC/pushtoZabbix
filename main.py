@@ -62,7 +62,7 @@ def job():
         zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
         zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
         zabbix_push(usuariosPool,"dayOfMonth", datetime.now().day)
-        diasHastaHoy = int(((datetime.now().strftime('%s') - miningStartDay.strftime('%s'))/86400))
+        diasHastaHoy = int(((int(datetime.now().strftime('%s')) - int(miningStartDay.strftime('%s'))/86400)))
         zabbix_push(usuariosPool,"minedDaysToday", diasHastaHoy)
         print("\n")
     print("-----")
