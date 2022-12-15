@@ -42,7 +42,7 @@ def bigQueryRead(query):
 
 def job():
     usuariosDF = bigQueryRead(f"SELECT * FROM BD1.usuarios ORDER BY id DESC")
-    for usuariosPool, inversionInicial,revShare,revShare_std, totalMined_mtd, actualHashrate, qtyAsics,activeWorkers,inactiveWorkers,totalMined_std,totalPayed_mtd,inmatureBalance,totalPayed_std,revShare_mtd,paidTodayEstimate,miningStartDay in zip(usuariosDF["usuariosPool"],usuariosDF["inversionInicial"],usuariosDF["revShare"], usuariosDF["revShare_std"], usuariosDF["totalMined_mtd"], usuariosDF["actualHashrate"], usuariosDF["qtyAsics"],usuariosDF["activeWorkers"],usuariosDF["inactiveWorkers"],usuariosDF["totalMined_std"],usuariosDF["totalPayed_mtd"],usuariosDF["inmatureBalance"],usuariosDF["totalPayed_std"],usuariosDF["revShare_mtd"],usuariosDF["paidTodayEstimate"],usuariosDF["miningStartDay"]):
+    for usuariosPool, inversionInicial,revShare,revShare_std, totalMined_mtd, actualHashrate, qtyAsics,activeWorkers,inactiveWorkers,totalMined_std,totalPayed_mtd,inmatureBalance,totalPayed_std,revShare_mtd,paidTodayEstimate,miningStartDay,baseTotalmined in zip(usuariosDF["usuariosPool"],usuariosDF["inversionInicial"],usuariosDF["revShare"], usuariosDF["revShare_std"], usuariosDF["totalMined_mtd"], usuariosDF["actualHashrate"], usuariosDF["qtyAsics"],usuariosDF["activeWorkers"],usuariosDF["inactiveWorkers"],usuariosDF["totalMined_std"],usuariosDF["totalPayed_mtd"],usuariosDF["inmatureBalance"],usuariosDF["totalPayed_std"],usuariosDF["revShare_mtd"],usuariosDF["paidTodayEstimate"],usuariosDF["miningStartDay"],usuariosDF["baseTotalmined"]):
         zabbix_push(usuariosPool, "dolar_blue", getUSDValue())
         zabbix_push(usuariosPool, "btc_price", getBtcValue())
         zabbix_push(usuariosPool, "valor_kwh", 11)
@@ -61,6 +61,7 @@ def job():
         zabbix_push(usuariosPool, "revShare_mtd", revShare_mtd)
         zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
         zabbix_push(usuariosPool, "paidTodayEstimate", paidTodayEstimate)
+        zabbix_push(usuariosPool, "baseTotalmined", baseTotalmined)
         zabbix_push(usuariosPool,"dayOfMonth", datetime.now().day)
         diasHastaHoy = int(int(((int(datetime.now().strftime('%s')) - int(miningStartDay.strftime('%s')))))/86400)
         zabbix_push(usuariosPool,"minedDaysToday", diasHastaHoy)
