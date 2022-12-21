@@ -68,14 +68,15 @@ def job():
         diasHastaHoy = int(int(((int(datetime.now().strftime('%s')) - int(miningStartDay.strftime('%s')))))/86400)
         zabbix_push(usuariosPool,"minedDaysToday", diasHastaHoy)
         print("\n")
-    print("-----")
+    print("--FIN JOB--")
     global last_run
-    last_run = time.time()
+    last_run = round(time.time())
 
 def monitor():
     global last_run
     zabbix_push("pushtozabbix001", "ping", 1)
     zabbix_push("pushtozabbix001", "last_run", last_run)
+    print("--FIN MONITOR--")
 job()
 schedule.every(2).minutes.do(job)
 schedule.every(1).minutes.do(monitor)
