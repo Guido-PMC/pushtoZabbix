@@ -5,9 +5,11 @@ from bs4 import BeautifulSoup
 import yfinance as yf
 import schedule
 from datetime import datetime
+import time
 
 CREDS_BIGQUERY = '/creds/bigsurmining-14baacf42c48.json'
-
+global last_run
+last_run = round(time.time())
 #######UPDATE BTC
 def getBtcValue():
     BTC_Ticker = yf.Ticker("BTC-USD")
@@ -67,7 +69,15 @@ def job():
         zabbix_push(usuariosPool,"minedDaysToday", diasHastaHoy)
         print("\n")
     print("-----")
+    global last_run
+    last_run = time.time()
+
+def monitor():
+    global last_run
+    zabbix_push("pushtozabbix001", "1", application.ping)
+    zabbix_push("pushtozabbix001", last_run, application.last_run)
 job()
 schedule.every(2).minutes.do(job)
+schedule.every(1).minutes.do(monitor)
 while True:
     schedule.run_pending()
