@@ -74,8 +74,8 @@ def job():
 
 def monitor():
     global last_run
-    zabbix_push("pushtozabbix001", "1", application.ping)
-    zabbix_push("pushtozabbix001", last_run, application.last_run)
+    zabbix_push("pushtozabbix001", "1", ping)
+    zabbix_push("pushtozabbix001", last_run, last_run)
 job()
 schedule.every(2).minutes.do(job)
 schedule.every(1).minutes.do(monitor)
